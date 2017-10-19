@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Контактная форма";
+    @model nettech_lab.Models.ContactFormModel
+
+}
+
+@if (TempData.Keys.Contains("result")) {
+<script type="text/javascript">
+    alert('@TempData["result"].ToString()');
+</script>
+}
+
+
+<html>
+<head>
+    <link href="@Url.Content("~/css/style.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h1><strong>Лабораторная работа №2</strong></h1> 
+    <h2>Контактная форма</h2>
+
+    <div style="border: solid; width: 50%">
+        <form asp-action="Send" asp-controller="Contact" style="margin: 15px">
+
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <div>
+                <label asp-for="Email"></label>
+                <br />
+                <input asp-for="Email" placeholder="Введите email" />
+                <span asp-validation-for="Email" />
+            </div>
+            <div>
+                <label asp-for="Subject"></label>
+                <br />
+                <input asp-for="Subject" placeholder="Введите тему письма" />
+                <span asp-validation-for="Subject" />
+            </div>
+            <div>
+                <label asp-for="Message"></label>
+                <br />
+                <input asp-for="Message" placeholder="Введите текст" />
+                <span asp-validation-for="Message" />
+
+            </div>
+            <br />
+            <input type="submit" />
+
+
+        </form>
+    </div>
+
+    @section scripts{
+
+        <environment names="Development">
+            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"
+                    asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.validator">
+            </script>
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"
+                    asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive">
+            </script>
+        </environment>
+    }
+
+</body>
+</html>
+

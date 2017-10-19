@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 using Microsoft.AspNetCore.Http;
 using React.AspNet;
+using Microsoft.AspNetCore.Session;
 
 namespace nettech_lab
 {
@@ -30,15 +31,25 @@ namespace nettech_lab
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddReact();
             // Add framework services.
             services.AddMvc();
+
+            
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.CookieName = ".MyApplication";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseSession();
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -78,7 +89,7 @@ namespace nettech_lab
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Contact}/{action=Index}/{id?}");
             });
         }
     }
